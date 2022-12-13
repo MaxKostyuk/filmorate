@@ -1,11 +1,19 @@
 package ru.yandex.practicum.filmorate.exception;
 
 public class ElementNotFoundException extends RuntimeException {
-    public ElementNotFoundException(String message) {
+
+    private Object element;
+    public ElementNotFoundException(String message, Object element) {
         super(message);
+        this.element = element;
     }
 
-    public ElementNotFoundException(String message, Throwable cause) {
+    public ElementNotFoundException(String message, Object element, Throwable cause) {
         super(message, cause);
+        this.element = element;
+    }
+
+    public Object getElement() {
+        return element;
     }
 }

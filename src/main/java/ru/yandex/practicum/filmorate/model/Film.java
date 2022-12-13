@@ -21,7 +21,7 @@ public class Film {
     private String description;
     @ReleaseDateValidation
     private LocalDate releaseDate;
-    @PositiveDuration
-    private Duration duration;
+    @Positive
+    private int duration;
 
 }

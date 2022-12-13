@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ElementNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -34,7 +35,7 @@ public class UserController {
     @PutMapping
     private User updateUser(@Valid @RequestBody User user) {
         if (!userMap.containsKey(user.getId()))
-            throw new ElementNotFoundException("User with id " + user.getId() + " not found");
+            throw new ElementNotFoundException("User with id " + user.getId() + " not found", user);
         putUserToMap(user, "User with id " + user.getId() + " was updated");
         return user;
     }
@@ -47,9 +48,9 @@ public class UserController {
     }
 
     @ExceptionHandler(ElementNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    private void elementNotFoundHandler(ElementNotFoundException e) {
+    private ResponseEntity elementNotFoundHandler(ElementNotFoundException e) {
         log.warn(e.getMessage());
+        return new ResponseEntity<>(e.getElement(),HttpStatus.NOT_FOUND);
     }
 
     private int setNewId() {
